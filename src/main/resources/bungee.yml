@@ -1,0 +1,4 @@
+name: AlsaceBungeeCore
+version: '${project.version}'
+main: work.alsace.AlsaceBungeeCore
+author: Hanamizu, CHuNan
