@@ -3,6 +3,8 @@ package work.alsace;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,7 +20,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.event.EventHandler;
 
 public class PlayerListener implements Listener {
-    private AlsaceBungeeCore plugin;
+
+    private final Set<String> enabledServers;
+
     private final Set<String> hasConnected = new HashSet<>();
     private final SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
 
@@ -35,7 +39,7 @@ public class PlayerListener implements Listener {
     }
 
     public PlayerListener(AlsaceBungeeCore plugin) {
-        this.plugin = plugin;
+        this.enabledServers = plugin.enabledServers;
     }
 
     @EventHandler
@@ -43,10 +47,16 @@ public class PlayerListener implements Listener {
         ProxiedPlayer player = event.getPlayer();
         ServerInfo from = event.getFrom();
         if (from == null) {
-            this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "加入了" + player.getServer().getInfo().getName()));
-            this.hasConnected.add(player.getName());
+            String serverName = player.getServer().getInfo().getName();
+            if (enabledServers.contains(serverName)) {
+                this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "加入了" + serverName));
+                this.hasConnected.add(player.getName());
+            }
         } else {
-            this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "已跨服至" + player.getServer().getInfo().getName()));
+            String toServer = player.getServer().getInfo().getName();
+            if (enabledServers.contains(toServer)) {
+                this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "已跨服至" + toServer));
+            }
         }
     }
 
