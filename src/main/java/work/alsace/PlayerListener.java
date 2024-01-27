@@ -1,23 +1,23 @@
 package work.alsace;
 
-import net.md_5.bungee.api.event.*;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.HoverEvent.Action;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.ServerSwitchEvent;
+import net.md_5.bungee.api.event.TabCompleteResponseEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.HoverEvent.Action;
-import net.md_5.bungee.api.chat.hover.content.Text;
-import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.event.EventHandler;
 
 public class PlayerListener implements Listener {
 
@@ -75,10 +75,11 @@ public class PlayerListener implements Listener {
     }
 
     private void sendMessage(TextComponent component) {
-
         for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-            player.sendMessage(component);
+            if (enabledServers.contains(player.getServer().getInfo().getName())) {
+                player.sendMessage(component);
+            }
         }
-
     }
+
 }
