@@ -49,7 +49,7 @@ public class PlayerListener implements Listener {
         if (from == null) {
             String serverName = player.getServer().getInfo().getName();
             if (enabledServers.contains(serverName)) {
-                this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "加入了" + serverName));
+                this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "加入了服务器"));
                 this.hasConnected.add(player.getName());
             }
         } else {
