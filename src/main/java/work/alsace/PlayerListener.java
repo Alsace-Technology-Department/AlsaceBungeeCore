@@ -17,12 +17,13 @@ import net.md_5.bungee.event.EventHandler;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class PlayerListener implements Listener {
 
     private final Set<String> enabledServers;
-
+    private final Map<String, Map<String, Object>> aliasServers;  // 新增服务器别名配置
     private final Set<String> hasConnected = new HashSet<>();
     private final SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
 
@@ -40,6 +41,7 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(AlsaceBungeeCore plugin) {
         this.enabledServers = plugin.enabledServers;
+        this.aliasServers = plugin.aliasServers;  // 初始化服务器别名配置
     }
 
     @EventHandler
@@ -47,16 +49,12 @@ public class PlayerListener implements Listener {
         ProxiedPlayer player = event.getPlayer();
         ServerInfo from = event.getFrom();
         if (from == null) {
-            String serverName = player.getServer().getInfo().getName();
-            if (enabledServers.contains(serverName)) {
-                this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "加入了服务器"));
-                this.hasConnected.add(player.getName());
-            }
+            this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "加入了服务器"));
+            this.hasConnected.add(player.getName());
         } else {
             String toServer = player.getServer().getInfo().getName();
-            if (enabledServers.contains(toServer)) {
-                this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "已跨服至" + toServer));
-            }
+            String alias = getServerAlias(toServer);  // 获取服务器别名
+            this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "已跨服至" + (alias != null ? alias : toServer)));
         }
     }
 
@@ -66,7 +64,6 @@ public class PlayerListener implements Listener {
         if (this.hasConnected.remove(player.getName())) {
             this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "离开了游戏"));
         }
-
     }
 
     @EventHandler
@@ -82,4 +79,14 @@ public class PlayerListener implements Listener {
         }
     }
 
+    private String getServerAlias(String serverName) {
+        for (Map.Entry<String, Map<String, Object>> entry : aliasServers.entrySet()) {
+            String alias = entry.getKey();
+            Map<String, Object> servers = entry.getValue();
+            if (servers.containsKey(serverName)) {
+                return (String) servers.get(serverName);
+            }
+        }
+        return null;
+    }
 }

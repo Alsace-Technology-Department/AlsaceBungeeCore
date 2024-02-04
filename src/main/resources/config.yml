@@ -4,3 +4,38 @@ enabledServers:
   - exhibition
   - 1.12
   - project
+servers:
+  business:
+    name: '商单服'
+    servers:
+      - bu118
+      - bu119
+      - bu120
+      - bu117
+      - bu116
+      - bu112
+  project:
+    name: '项目服'
+    servers:
+      - project
+  community:
+    name: '社区服'
+    servers:
+      - 1.20
+  comprehensive:
+    name: '综合服'
+    servers:
+      - 1.12
+  exhibition:
+    name: '展览馆'
+    servers:
+      - exhibition
+  games:
+    name: '小游戏服'
+    servers:
+      - nmbs
+      - hungergames
+      - bingo
+      - blockhunt
+      - bedwars
+      - bridge
