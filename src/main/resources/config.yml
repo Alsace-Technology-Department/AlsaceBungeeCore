@@ -4,7 +4,7 @@ enabledServers:
   - exhibition
   - 1.12
   - project
-servers:
+aliasservers:
   business:
     name: '商单服'
     servers:
