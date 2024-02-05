@@ -6,36 +6,21 @@ enabledServers:
   - project
 aliasservers:
   business:
-    name: '商单服'
-    servers:
-      - bu118
-      - bu119
-      - bu120
-      - bu117
-      - bu116
-      - bu112
+    bu118: '商单服'
+    bu119: '商单服'
+    # 其他服务器别名配置
   project:
-    name: '项目服'
-    servers:
-      - project
+    project: '项目服'
   community:
-    name: '社区服'
-    servers:
-      - 1.20
+    '1.20': '社区服'
   comprehensive:
-    name: '综合服'
-    servers:
-      - 1.12
+    '1.12': '综合服'
   exhibition:
-    name: '展览馆'
-    servers:
-      - exhibition
+    exhibition: '展览馆'
   games:
-    name: '小游戏服'
-    servers:
-      - nmbs
-      - hungergames
-      - bingo
-      - blockhunt
-      - bedwars
-      - bridge
+    nmbs: '小游戏服'
+    hungergames: '小游戏服'
+    bingo: '小游戏服'
+    blockhunt: '小游戏服'
+    bedwars: '小游戏服'
+    bridge: '小游戏服'
