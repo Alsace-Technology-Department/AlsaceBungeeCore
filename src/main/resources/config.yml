@@ -1,8 +1,8 @@
 enabledServers:
   - lobby
-  - 1.20
+  - '1.20'
   - exhibition
-  - 1.12
+  - '1.12'
   - project
 aliasservers:
   business:
@@ -21,11 +21,11 @@ aliasservers:
   community:
     name: '社区服'
     servers:
-      - 1.20
+      - '1.20'
   comprehensive:
     name: '综合服'
     servers:
-      - 1.12
+      - '1.12'
   exhibition:
     name: '展览馆'
     servers:

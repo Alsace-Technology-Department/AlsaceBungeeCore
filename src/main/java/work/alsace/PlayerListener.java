@@ -15,15 +15,13 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PlayerListener implements Listener {
 
+    private final AlsaceBungeeCore plugin;
     private final Set<String> enabledServers;
-    private final Map<String, Map<String, Object>> aliasServers;  // 新增服务器别名配置
+    private final Map<String, Map<String, Object>> aliasServers;
     private final Set<String> hasConnected = new HashSet<>();
     private final SimpleDateFormat date = new SimpleDateFormat("HH:mm:ss");
 
@@ -40,8 +38,9 @@ public class PlayerListener implements Listener {
     }
 
     public PlayerListener(AlsaceBungeeCore plugin) {
+        this.plugin = plugin;
         this.enabledServers = plugin.enabledServers;
-        this.aliasServers = plugin.aliasServers;  // 初始化服务器别名配置
+        this.aliasServers = plugin.aliasServers;
     }
 
     @EventHandler
@@ -53,8 +52,9 @@ public class PlayerListener implements Listener {
             this.hasConnected.add(player.getName());
         } else {
             String toServer = player.getServer().getInfo().getName();
-            String alias = getServerAlias(toServer);  // 获取服务器别名
-            this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "已跨服至" + (alias != null ? alias : toServer)));
+            String alias = getServerAlias(toServer);
+            String displayName = alias != null ? getDisplayName(alias) : toServer;
+            this.sendMessage(this.getComponent(this.getClickableName(player.getName()), "已跨服至" + displayName));
         }
     }
 
@@ -82,11 +82,30 @@ public class PlayerListener implements Listener {
     private String getServerAlias(String serverName) {
         for (Map.Entry<String, Map<String, Object>> entry : aliasServers.entrySet()) {
             String alias = entry.getKey();
-            Map<String, Object> servers = entry.getValue();
-            if (servers.containsKey(serverName)) {
-                return (String) servers.get(serverName);
+            Map<String, Object> aliasInfo = entry.getValue();
+            if (aliasInfo.containsKey("servers")) {
+                Object serversObj = aliasInfo.get("servers");
+                if (serversObj instanceof List) {
+                    List<String> serversList = (List<String>) serversObj;
+                    if (serversList.contains(serverName)) {
+                        return aliasInfo.containsKey("name") ? (String) aliasInfo.get("name") : alias;
+                    }
+                } else if (serversObj instanceof String) {
+                    String server = (String) serversObj;
+                    if (server.equals(serverName)) {
+                        return aliasInfo.containsKey("name") ? (String) aliasInfo.get("name") : alias;
+                    }
+                }
             }
         }
         return null;
+    }
+
+
+    private String getDisplayName(String alias) {
+        if (aliasServers.containsKey(alias) && aliasServers.get(alias).containsKey("name")) {
+            return (String) aliasServers.get(alias).get("name");
+        }
+        return alias;
     }
 }

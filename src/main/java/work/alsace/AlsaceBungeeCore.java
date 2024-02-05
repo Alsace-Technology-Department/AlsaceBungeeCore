@@ -42,16 +42,16 @@ public final class AlsaceBungeeCore extends Plugin {
             if (configuration.contains("aliasservers")) {
                 Configuration aliasConfig = configuration.getSection("aliasservers");
                 for (String alias : aliasConfig.getKeys()) {
-                    Map<String, Object> servers = new HashMap<>();
-                    Configuration serversConfig = aliasConfig.getSection(alias);
-                    for (String server : serversConfig.getKeys()) {
-                        servers.put(server, serversConfig.getString(server));
-                    }
-                    aliasServers.put(alias, servers);
+                    Map<String, Object> aliasInfo = new HashMap<>();
+                    aliasInfo.put("name", aliasConfig.getString(alias + ".name"));
+                    aliasInfo.put("servers", aliasConfig.getStringList(alias + ".servers"));
+                    aliasServers.put(alias, aliasInfo);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }
