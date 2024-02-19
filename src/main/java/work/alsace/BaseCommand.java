@@ -19,14 +19,9 @@ public class BaseCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         // 确保命令有参数
         if (args.length > 0) {
-            switch (args[0]) {
-                case "reload":
-                    plugin.loadConfig();
-                    sender.sendMessage(ChatColor.GRAY + "配置已重载。");
-                case "info":
-                    sender.sendMessage(ChatColor.GRAY + "插件名称: §fAlsaceCore\n§7插件版本: §f" + plugin.getDescription().getVersion() + "\n§7插件作者: §f" + Arrays.toString(plugin.getDescription().getAuthor().toCharArray()));
-                default:
-                    sender.sendMessage(ChatColor.RED + "未知命令");
+            if (args[0].equals("reload")) {
+                plugin.loadConfig();
+                sender.sendMessage(ChatColor.GRAY + "配置已重载。");
             }
         }
     }
